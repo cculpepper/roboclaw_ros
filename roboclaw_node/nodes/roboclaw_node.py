@@ -165,7 +165,7 @@ class Node(object):
 
         # TODO need someway to check if address is correct
         try:
-            roboclaw.open(dev_name, baud_rate)
+            roboclaw.open_port(dev_name, baud_rate)
         except IOError as err:
             rospy.logfatal("Could not connect to Roboclaw")
             rospy.logdebug(err)
