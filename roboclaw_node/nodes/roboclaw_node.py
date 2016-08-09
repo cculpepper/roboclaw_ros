@@ -289,22 +289,22 @@ class Node(object):
             vr = vl_t
             vl = vr_t
 
-        vr_ticks = int(vr * self.tpm)  # ticks/s
-        vl_ticks = int(vl * self.tpm)
+        vr_ticks = int(vr * self.tpm + 0.5)  # ticks/s
+        vl_ticks = int(vl * self.tpm + 0.5)
 
         rospy.logdebug("vr_ticks:{} vl_ticks: {}".format(vr_ticks, vl_ticks))
 
         try:
             # This is a hack way to keep a poorly tuned PID from making noise
             # at speed 0
-            if vr_ticks is 0 and vl_ticks is 0:
+            if vr_ticks == 0 and vl_ticks == 0:
                 roboclaw.fw_m1(self.address, 0)
                 roboclaw.fw_m2(self.address, 0)
             else:
                 roboclaw.speed_accel_m1m2(
                     self.address, self.accel_t, vr_ticks, vl_ticks)
                 rospy.logwarn(
-                    "A:{}\tR:{}\nL:{}".format(self.accel_t, vr_ticks, vl_ticks))
+                    "A:{}\tR:{}\tL:{}".format(self.accel_t, vr_ticks, vl_ticks))
         except OSError as err:
             rospy.logwarn("speed_m1m2 OSError: %d", err.errno)
             rospy.logdebug(err)
