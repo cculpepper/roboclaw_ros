@@ -320,7 +320,7 @@ def _write_cksum():
     global _CRC
     _write_word(_CRC & 0xFFFF)
     val = _read_byte()
-    if val[0] == 0xFF:
+    if val[0]:
         return True
     return False
 
