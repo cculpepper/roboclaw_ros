@@ -216,8 +216,8 @@ class Node(object):
             if (rospy.get_rostime() - self.last_set_speed_time).to_sec() > 1:
                 rospy.logdebug("Did not get comand for 1 second, stopping")
                 try:
-                    roboclaw.fwd_m1(self.address, 0)
-                    roboclaw.fwd_m2(self.address, 0)
+                    roboclaw.fw_m1(self.address, 0)
+                    roboclaw.fw_m2(self.address, 0)
                 except OSError as err:
                     rospy.logerr("Could not stop")
                     rospy.logdebug(err)
@@ -295,8 +295,8 @@ class Node(object):
             # This is a hack way to keep a poorly tuned PID from making noise
             # at speed 0
             if vr_ticks is 0 and vl_ticks is 0:
-                roboclaw.fwd_m1(self.address, 0)
-                roboclaw.fwd_m2(self.address, 0)
+                roboclaw.fw_m1(self.address, 0)
+                roboclaw.fw_m2(self.address, 0)
             else:
                 roboclaw.speed_m1m2(self.address, vr_ticks, vl_ticks)
         except OSError as err:
@@ -335,13 +335,13 @@ class Node(object):
     def shutdown(self):
         rospy.loginfo("Shutting down")
         try:
-            roboclaw.fwd_m1(self.address, 0)
-            roboclaw.fwd_m2(self.address, 0)
+            roboclaw.fw_m1(self.address, 0)
+            roboclaw.fw_m2(self.address, 0)
         except OSError:
             rospy.logerr("Shutdown did not work trying again")
             try:
-                roboclaw.fwd_m1(self.address, 0)
-                roboclaw.fwd_m2(self.address, 0)
+                roboclaw.fw_m1(self.address, 0)
+                roboclaw.fw_m2(self.address, 0)
             except OSError as err:
                 rospy.logerr("Could not shutdown motors!!!!")
                 rospy.logdebug(err)
