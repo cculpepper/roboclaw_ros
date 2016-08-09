@@ -177,7 +177,7 @@ class Node(object):
                          FunctionDiagnosticTask("Vitals", self.check_vitals))
 
         try:
-            version = roboclaw.read_version(self.address)
+            version = roboclaw.get_version(self.address)
         except IOError as err:
             rospy.logwarn("Problem getting roboclaw version")
             rospy.logdebug(err)
