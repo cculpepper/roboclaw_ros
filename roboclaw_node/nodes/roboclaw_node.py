@@ -18,6 +18,7 @@ __author__ = "bwbazemore@uga.edu (Brad Bazemore)"
 
 G_INVERT_MOTOR_AXES = False
 G_FLIP_LEFT_RIGHT_MOTORS = False  # By default M1=right motor M2=left motor
+TURN_MOTOR_OFF_WHEN_0 = False  # By default M1=right motor M2=left motor
 
 
 # TODO: need to find some better was of handling OSerror 11 or preventing it,
@@ -297,7 +298,7 @@ class Node(object):
         try:
             # This is a hack way to keep a poorly tuned PID from making noise
             # at speed 0
-            if vr_ticks == 0 and vl_ticks == 0:
+            if vr_ticks == 0 and vl_ticks == 0 and TURN_MOTOR_OFF_WHEN_0:
                 roboclaw.fw_m1(self.address, 0)
                 roboclaw.fw_m2(self.address, 0)
             else:
