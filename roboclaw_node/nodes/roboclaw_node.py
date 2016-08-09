@@ -304,7 +304,7 @@ class Node(object):
                 roboclaw.speed_accel_m1m2(
                     self.address, self.accel_t, vr_ticks, vl_ticks)
                 rospy.logwarn(
-                    "A:{}\tR:{}\nL:{}".format(self.accel, vr_ticks, vl_ticks))
+                    "A:{}\tR:{}\nL:{}".format(self.accel_t, vr_ticks, vl_ticks))
         except OSError as err:
             rospy.logwarn("speed_m1m2 OSError: %d", err.errno)
             rospy.logdebug(err)
