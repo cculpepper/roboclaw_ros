@@ -16,7 +16,7 @@ from nav_msgs.msg import Odometry
 
 __author__ = "bwbazemore@uga.edu (Brad Bazemore)"
 
-G_INVERT_MOTOR_AXES = True
+G_INVERT_MOTOR_AXES = False
 G_FLIP_LEFT_RIGHT_MOTORS = False  # By default M1=right motor M2=left motor
 
 
