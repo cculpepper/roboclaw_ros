@@ -320,7 +320,7 @@ def _write_cksum():
     global _CRC
     _write_word(_CRC & 0xFFFF)
     val = _read_byte()
-    if val[0]:
+    if val[0] == 0xFF:
         return True
     return False
 
@@ -905,7 +905,7 @@ def speed_accel_m2(addr, accel, speed):
 
 
 def speed_accel_m1m2(addr, accel, speed1, speed2):
-    return _write_4s4s4(addr, Cmd.M1SPEEDACCEL, accel, speed1, speed2)
+    return _write_4s4s4(addr, Cmd.MIXEDSPEEDACCEL, accel, speed1, speed2)
 
 
 def speed_dist_m1(addr, speed, distance, buffer_val):
