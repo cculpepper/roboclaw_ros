@@ -192,7 +192,7 @@ class Node(object):
 
         self.max_speed = float(rospy.get_param("~max_speed", "2.0"))
         self.tpm = float(rospy.get_param("~ticks_per_meter", "4342.2"))
-        self.accel = float(rospy.get_param("~accel", "1.0")) * self.tpm
+        self.accel = int(rospy.get_param("~accel", "1.0")) * self.tpm
         self.base_width = float(rospy.get_param("~base_width", "0.315"))
 
         self.encodm = EncoderOdom(self.tpm, self.base_width)
