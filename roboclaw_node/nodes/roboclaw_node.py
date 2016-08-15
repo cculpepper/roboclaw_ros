@@ -247,26 +247,26 @@ class Node(object):
                 rospy.logwarn("ReadEncM2 OSError: %d", err.errno)
                 rospy.logdebug(err)
 
-        try:
-            if G_INVERT_MOTOR_AXES:
-                enc1 = -enc1
-                enc2 = -enc2
+            try:
+                if G_INVERT_MOTOR_AXES:
+                    enc1 = -enc1
+                    enc2 = -enc2
 
-            if G_FLIP_LEFT_RIGHT_MOTORS:
-                enc1_t = enc1
-                enc2_t = enc2
+                if G_FLIP_LEFT_RIGHT_MOTORS:
+                    enc1_t = enc1
+                    enc2_t = enc2
 
-                enc2 = enc1_t
-                enc1 = enc2_t
+                    enc2 = enc1_t
+                    enc1 = enc2_t
 
                 rospy.logdebug("Encoders {} {}".format(enc1, enc2))
                 # update_publish expects enc_left enc_right
                 self.encodm.update_publish(enc2, enc1)
-
                 self.updater.update()
-        except Exception as err:
-            print "Problems reading encoders: {}".format(err)
-            r_time.sleep()
+
+            except Exception as err:
+                rospy.logwarn("Problems reading encoders: {}".format(err))
+                r_time.sleep()
 
     def cmd_vel_callback(self, twist):
         self.last_set_speed_time = rospy.get_rostime()
