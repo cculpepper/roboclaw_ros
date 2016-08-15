@@ -236,7 +236,7 @@ class Node(object):
             except ValueError:
                 pass
             except OSError as err:
-                rospy.logwarn("ReadEncM1 OSError: %d", err.errno)
+                rospy.logwarn("ReadEncM1 OSError: {}".format(err.errno))
                 rospy.logdebug(err)
 
             try:
@@ -244,7 +244,7 @@ class Node(object):
             except ValueError:
                 pass
             except OSError as err:
-                rospy.logwarn("ReadEncM2 OSError: %d", err.errno)
+                rospy.logwarn("ReadEncM2 OSError: {}".format(err.errno))
                 rospy.logdebug(err)
 
             try:
