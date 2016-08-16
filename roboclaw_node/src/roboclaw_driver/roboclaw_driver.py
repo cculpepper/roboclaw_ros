@@ -287,7 +287,7 @@ def _read4_1(addr, cmd):
         trys -= 1
         if trys == 0:
             break
-    return 0, 0
+    return 0, 0, 0
 
 
 def _read_n(addr, cmd, args):
