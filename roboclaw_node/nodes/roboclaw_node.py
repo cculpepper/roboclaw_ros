@@ -217,7 +217,6 @@ class Node(object):
         rospy.loginfo("Starting motor drive")
         r_time = rospy.Rate(10)
         while not rospy.is_shutdown():
-
             if (rospy.get_rostime() - self.last_set_speed_time).to_sec() > self.timeout:
                 rospy.logdebug("Did not get comand for 1 second, stopping motors")
                 try:
@@ -234,16 +233,16 @@ class Node(object):
 
             try:
                 status1, enc1, crc1 = roboclaw.get_enc_m1(self.address)
-            except ValueError:
-                pass
+            except ValueError as err:
+                rospy.logwarn("Problems reading enc1: {}".format(err))
             except OSError as err:
                 rospy.logwarn("ReadEncM1 OSError: {}".format(err.errno))
                 rospy.logdebug(err)
 
             try:
                 status2, enc2, crc2 = roboclaw.get_enc_m2(self.address)
-            except ValueError:
-                pass
+            except ValueError as err:
+                rospy.logwarn("Problems reading enc2: {}".format(err))
             except OSError as err:
                 rospy.logwarn("ReadEncM2 OSError: {}".format(err.errno))
                 rospy.logdebug(err)
@@ -265,7 +264,7 @@ class Node(object):
                 self.encodm.update_publish(enc2, enc1)
                 self.updater.update()
 
-            except Exception as err:
+            except TypeError as err:
                 rospy.logwarn("Problems reading encoders: {}".format(err))
             r_time.sleep()
 
