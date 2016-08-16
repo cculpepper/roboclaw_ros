@@ -261,7 +261,8 @@ class Node(object):
 
                 rospy.logdebug("Encoders {} {}".format(enc1, enc2))
                 # update_publish expects enc_left enc_right
-                self.encodm.update_publish(enc2, enc1)
+                if status1 and status2:
+                    self.encodm.update_publish(enc2, enc1)
                 self.updater.update()
 
             except TypeError as err:
