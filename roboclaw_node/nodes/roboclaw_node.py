@@ -152,12 +152,13 @@ class Node(object):
                        0x2000: (diagnostic_msgs.msg.DiagnosticStatus.WARN, "Temperature2"),
                        0x4000: (diagnostic_msgs.msg.DiagnosticStatus.OK, "M1 home"),
                        0x8000: (diagnostic_msgs.msg.DiagnosticStatus.OK, "M2 home")}
-
+        self.timeout = 1.0  # seconds till the the motors are turned off if no cmd_vel is received
         rospy.init_node("roboclaw_node")
         rospy.on_shutdown(self.shutdown)
         rospy.loginfo("Connecting to roboclaw")
         dev_name = rospy.get_param("~dev", "/dev/ttyACM0")
         baud_rate = int(rospy.get_param("~baud", "115200"))
+
 
         self.address = int(rospy.get_param("~address", "128"))
         if self.address > 0x87 or self.address < 0x80:
@@ -217,8 +218,8 @@ class Node(object):
         r_time = rospy.Rate(10)
         while not rospy.is_shutdown():
 
-            if (rospy.get_rostime() - self.last_set_speed_time).to_sec() > 1:
-                rospy.logdebug("Did not get comand for 1 second, stopping")
+            if (rospy.get_rostime() - self.last_set_speed_time).to_sec() > self.timeout:
+                rospy.logdebug("Did not get comand for 1 second, stopping motors")
                 try:
                     roboclaw.fw_m1(self.address, 0)
                     roboclaw.fw_m2(self.address, 0)
@@ -266,7 +267,7 @@ class Node(object):
 
             except Exception as err:
                 rospy.logwarn("Problems reading encoders: {}".format(err))
-                r_time.sleep()
+            r_time.sleep()
 
     def cmd_vel_callback(self, twist):
         self.last_set_speed_time = rospy.get_rostime()
@@ -305,7 +306,8 @@ class Node(object):
                 success = roboclaw.speed_accel_m1m2(
                     self.address, self.accel_t, vr_ticks, vl_ticks)
                 rospy.logdebug(
-                    "A: {}\tR: {}\tL: {}\tS: {}".format(self.accel_t, vr_ticks, vl_ticks, success))
+                    "A: {}\tR: {}\tL: {}\tS: {}".format(
+                        self.accel_t, vr_ticks, vl_ticks, success))
         except OSError as err:
             rospy.logwarn("speed_m1m2 OSError: %d", err.errno)
             rospy.logdebug(err)
