@@ -282,7 +282,7 @@ def _read4_1(addr, cmd):
                 crc = _read_cksum_word()
                 if crc[0]:
                     if _CRC & 0xFFFF != crc[1] & 0xFFFF:
-                        return 0, 0
+                        return 0, 0, 0
                     return 1, val1[1], val2[1]
         trys -= 1
         if trys == 0:
